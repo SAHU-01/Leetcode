@@ -1,0 +1,82 @@
+/**************
+JAVA
+
+Design an iterator to flatten a 2D vector. It should support the next and hasNext operations.
+
+Implement the Vector2D class:
+
+Vector2D(int[][] vec) initializes the object with the 2D vector vec.
+next() returns the next element from the 2D vector and moves the pointer one step forward. You may assume that all the calls to next are valid.
+hasNext() returns true if there are still some elements in the vector, and false otherwise.
+ 
+
+Example 1:
+
+Input
+["Vector2D", "next", "next", "next", "hasNext", "hasNext", "next", "hasNext"]
+[[[[1, 2], [3], [4]]], [], [], [], [], [], [], []]
+Output
+[null, 1, 2, 3, true, true, 4, false]
+
+Explanation
+Vector2D vector2D = new Vector2D([[1, 2], [3], [4]]);
+vector2D.next();    // return 1
+vector2D.next();    // return 2
+vector2D.next();    // return 3
+vector2D.hasNext(); // return True
+vector2D.hasNext(); // return True
+vector2D.next();    // return 4
+vector2D.hasNext(); // return False
+ 
+
+Constraints:
+
+0 <= vec.length <= 200
+0 <= vec[i].length <= 500
+-500 <= vec[i][j] <= 500
+At most 105 calls will be made to next and hasNext.
+ 
+
+Follow up: As an added challenge, try to code it using only iterators in C++ or iterators in Java.
+
+
+
+
+*****************/
+
+import java.util.NoSuchElementException;
+
+class Vector2D {
+
+    // Constructor will put all the nums into this list.
+    private List<Integer> nums = new ArrayList<>();
+    // Keep track of where the Iterator is up to.
+    private int position = 0;
+
+    public Vector2D(int[][] v) {
+        // We need to iterate over the 2D vector, getting all the integers
+        // out of it and putting them into nums (a field).
+        for (int[] innerVector : v) {
+            for (int num : innerVector) {
+                nums.add(num);
+            }
+        }
+    }
+
+    public int next() {
+        // In Java, we throw a NoSuchElementException when next() is called
+        // on an exhausted Iterator.
+        if (!hasNext()) throw new NoSuchElementException();
+        // Store the number we need to return, as we still need to move position forward.
+        int result = nums.get(position);
+        // Move the position pointer forward by 1, so that it's ready for
+        // the next call to next, and gives a correct hasNext result.
+        position++;
+        return result;
+    }
+
+    public boolean hasNext() {
+        // There's nums left as long as position is a valid index of the list.
+        return position < nums.size();
+    }
+}
