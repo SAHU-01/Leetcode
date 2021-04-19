@@ -1,0 +1,55 @@
+/************
+
+JAVA
+
+Given an arbitrary ransom note string and another string containing letters from all the magazines, write a function that will return true if the ransom note can be constructed from the magazines ; otherwise, it will return false.
+
+Each letter in the magazine string can only be used once in your ransom note.
+
+ 
+
+Example 1:
+
+Input: ransomNote = "a", magazine = "b"
+Output: false
+Example 2:
+
+Input: ransomNote = "aa", magazine = "ab"
+Output: false
+Example 3:
+
+Input: ransomNote = "aa", magazine = "aab"
+Output: true
+ 
+
+Constraints:
+
+You may assume that both strings contain only lowercase letters.
+
+
+*******************8/
+
+class Solution {
+    public boolean canConstruct(String ransomNote, String magazine) {
+	
+		// array to store the count of each letter in "magazine"
+         int[] count = new int[26];
+		 
+        for (char ch : magazine.toCharArray()) {
+            count[(int) ch - (int) 'a'] += 1;
+        }
+	   
+	   // decrementing the count of each character to see if more are needed
+        for (char ch : ransomNote.toCharArray()) {
+            count[(int) ch - (int) 'a'] -= 1;
+        }
+    
+		// if any count is negative, means there were insufficient number 
+		// of that character so "ransomNote" cannot be constructed
+        for (int i : count) {
+            if (i < 0)
+                return false;
+        }
+        return true;
+    }
+}
