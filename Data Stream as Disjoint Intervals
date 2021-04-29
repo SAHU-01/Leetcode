@@ -1,0 +1,88 @@
+class UnionFind{
+    Map<Integer, Integer> parentMap;
+    Map<Integer, int[]> rangeMap;
+    public UnionFind(){
+        parentMap = new HashMap();
+        rangeMap = new TreeMap();
+    }
+    
+    public boolean union(int i, int j){
+        int parentI = find(i);
+        int parentJ = find(j);
+        if(parentI == parentJ){
+            return false;
+        }
+        compress(i, parentI);
+        compress(j, parentJ);
+        if(Math.abs(parentMap.get(parentI)) > Math.abs(parentMap.get(parentJ))){
+            updateParents(parentI, parentJ);
+        }else{
+            updateParents(parentJ, parentI);
+        }
+        return true;
+    }
+    public void updateParents(int parentI, int parentJ){
+        parentMap.put(parentI, parentMap.get(parentI) + parentMap.get(parentJ));
+        parentMap.put(parentJ, parentI);
+        int[] parentJInterval = rangeMap.get(parentJ);
+        rangeMap.remove(parentJ);
+        int[] parentIInterval = rangeMap.get(parentI);
+        parentIInterval[0] = Math.min(parentIInterval[0], parentJInterval[0]);
+        parentIInterval[1] = Math.max(parentIInterval[1], parentJInterval[1]);
+    }
+    public void compress(int i, int parent){
+        while(parentMap.get(i) >= 0){ 
+            int next = parentMap.get(i);
+            parentMap.put(i, parent);
+            i = next;
+        }
+    }
+    public boolean contains(int i){
+        return parentMap.containsKey(i);
+    }
+    public void add(int i){
+        parentMap.put(i, -1);
+        rangeMap.put(i, new int[]{i,i});
+    }
+    public int find(int i){
+        while(parentMap.get(i) >= 0){
+            i = parentMap.get(i);
+        }
+        return i;
+    }
+}
+
+class SummaryRanges {
+
+    UnionFind uf;
+    /** Initialize your data structure here. */
+    public SummaryRanges() {
+        uf = new UnionFind();
+    }
+    
+    public void addNum(int val) {
+        if(uf.contains(val)){
+            return;
+        }
+        uf.add(val);
+        if(uf.contains(val-1)){
+            uf.union(val-1, val);
+        }
+        if(uf.contains(val+1)){
+            uf.union(val, val+1);
+        }
+    }
+    
+    public int[][] getIntervals() {
+        List<int[]> intermediateList = new ArrayList();
+        for(Map.Entry<Integer, int[]> en: uf.rangeMap.entrySet()){
+            intermediateList.add(en.getValue());
+        }
+        int[][] ret = new int[intermediateList.size()][2];
+        for(int i=0; i<intermediateList.size(); i++){
+            ret[i] = intermediateList.get(i);
+        }
+        return ret;
+    }
+}
+
