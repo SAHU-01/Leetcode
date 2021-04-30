@@ -1,0 +1,56 @@
+/************
+
+java
+
+Given two integers a and b, return the sum of the two integers without using the operators + and -.
+
+ 
+
+Example 1:
+
+Input: a = 1, b = 2
+Output: 3
+Example 2:
+
+Input: a = 2, b = 3
+Output: 5
+ 
+
+Constraints:
+
+-1000 <= a, b <= 1000
+
+***********/
+
+class Solution {
+    public int getSum(int a, int b) {
+        
+        //Iterate till there is no carry OR till the value of 'b' is 0.
+        //Example SUM: 1 + 2
+        while( b != 0){
+            
+            //Carry is calculated by Bitwise AND (&) Operation.
+            /* Binary Value of 1 -> 0001
+               Binary Value of 2 -> 0010
+      Bitwise (&) operator gives -> 0000  -> which is a Binary Equivalent of 0.
+      For an (&) Operator, if both the bits are 1 it gives 1 or else 0. So evidently the result is 0000.
+            */
+            int carry = a & b;
+            
+            //Now calculate the sum of the 2 numbers where Bitwise X0R (^) indicates (+) addition.
+             a ^= b; // -> equivalent to   a=a+b, a=a^b, 
+            
+            //so, now sum would be 3, which is the value of a.
+			
+			
+            /*Shift carry by 1 if it is not 0, so adding to 'a' gives the required sum.
+		    To be more precise (<<) left shift operator shifts the bits of the number to left
+			You can image this effect as of multiplying the number(carry) with power of 2^1.	
+		    Consider this equation to be an equivalent of b = carry * 2^1 = 0.  [FOR THE EXAMPLE SUM 1+2]
+			As, carry is 0 so, b would also become 0, we end the loop and return "a" where we have the "sum"
+			*/
+            b = carry << 1;  // This line of code can also be written as  b = carry  * (int)Math.pow(2,1); WORKS.
+        }
+        return a;
+    }
+}
