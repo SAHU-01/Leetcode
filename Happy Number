@@ -34,19 +34,20 @@ Constraints:
 
 *****/
 
-
-class Solution {
-    public boolean isHappy(int n) {
-        int k=0;
-        while(n>0){
-            k=k+(n%10)*(n%10);
-            n=n/10;
-            if(n==0 && k>4){
-                n=k;
-                k=0;
-            }
-        }
-        return k==1;
+<h4>
+class Solution {<br>
+    public boolean isHappy(int n) {<br>
+        int k=0;<br>
+        while(n>0){<br>
+            k=k+(n%10)*(n%10);<br>
+            n=n/10;<br>
+            if(n==0 && k>4){<br>
+                n=k;<br>
+                k=0;<br>
+            }<br>
+        }<br>
+        return k==1;<br>
         
-    }
-}
+    }<br>
+}<br>
+</h4>
