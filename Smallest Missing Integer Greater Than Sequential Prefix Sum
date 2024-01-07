@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int missingInteger(vector<int>& nums) {
+        
+        int n = nums.size();
+        int longest = 1; 
+        int prefixSum = nums[0];
+        
+        for(int i=1; i<n; i++) {
+            if(nums[i] == nums[i-1]+1) {
+                longest++;
+                prefixSum += nums[i];
+            }
+            else break;
+        }
+        
+        int missing = prefixSum;
+        while(find(nums.begin(), nums.end(), missing) != nums.end()) {
+            missing++;
+        }
+        
+        return missing;
+    }
+};
