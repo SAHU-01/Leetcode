@@ -1,0 +1,30 @@
+struct IOSettings {
+    IOSettings() {
+        std::ios::sync_with_stdio(false);
+        std::cin.tie(nullptr);
+        std::cout.tie(nullptr);
+    }
+};
+IOSettings ioSettings;
+class Solution {
+public:
+    int minSteps(std::string& s, std::string& t) {
+
+        // Initialize occVect for the range 'a' to 'z' to 0 each time
+        std::vector<int> occVect('z' + 1, 0);
+
+        // Populate occVect for strings s and t in one loop
+        for (int i = 0; i < s.length(); ++i) {
+            occVect[s[i]]++;
+            occVect[t[i]]--;
+        }
+
+        // Count the number of steps required
+        int absSum = std::accumulate(
+            occVect.begin() + 'a', occVect.end(), 0,
+            [](int acc, int val) { return acc + std::abs(val); });
+
+        // Divide by 2 to get the final result
+        return absSum / 2;
+    }
+};
