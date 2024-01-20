@@ -1,0 +1,16 @@
+class Solution:
+    def minimumCost(self, nums: List[int]) -> int:
+        
+        n = len(nums)
+        first_cost = nums[0]
+        second_cost = float("inf")
+        second_idx = 0
+        third_cost=float("inf")
+        for i in range(1, n):
+                if nums[i] < second_cost: 
+                    third_cost = second_cost
+                    second_cost = nums[i]
+                    second_idx = i
+                elif nums[i] < third_cost:
+                    third_cost = nums[i]
+        return first_cost + second_cost + third_cost
