@@ -1,0 +1,49 @@
+#include <string>
+#include <unordered_map>
+#include <vector>
+class Solution {
+public:
+    int minimumPushes(string word) {
+
+  unordered_map<char,int> freq;
+  
+  for(char c: word) {
+    freq[c]++; 
+  }
+
+  // Store characters and frequencies 
+  vector<pair<char,int>> chars;
+  for(auto p: freq) {
+    chars.push_back(p);
+  }
+
+  // Sort by frequency in descending order
+  sort(chars.begin(), chars.end(), 
+       [](pair<char,int> a, pair<char,int> b){
+         return a.second > b.second; 
+       });
+
+  int pushes = 0;
+  int keyPos = 1; 
+  int keyNum = 2;
+
+  for(auto p: chars) {
+    char c = p.first;
+    int f = p.second;
+    
+    pushes += f * keyPos;
+
+    if(keyNum < 9) {
+      keyNum++;
+    }
+    else {
+      keyNum = 2;
+      keyPos++;
+    }
+  }
+
+  return pushes;
+
+}
+
+};
