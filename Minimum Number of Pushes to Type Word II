@@ -1,0 +1,39 @@
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+class Solution {
+public:
+    int minimumPushes(string word) {
+        std::unordered_map<char, int> freq;
+        for (char ch : word) {
+            freq[ch]++;
+        }
+
+        std::vector<char> sortedChars;
+        for (const auto& pair : freq) {
+            sortedChars.push_back(pair.first);
+        }
+
+        std::sort(sortedChars.begin(), sortedChars.end(), [&](char a, char b) {
+            return freq[a] > freq[b];
+        });
+
+        int keyPresses = 0;
+        int keyPosition = 1;
+        int keyNumber = 2;
+
+        for (char ch : sortedChars) {
+            keyPresses += freq[ch] * keyPosition;
+            if (keyNumber < 9) {
+                keyNumber++;
+            } else {
+                keyNumber = 2;
+                keyPosition++;
+            }
+        }
+
+        return keyPresses;
+   
+    }
+};
