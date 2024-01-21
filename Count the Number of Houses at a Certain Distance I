@@ -1,0 +1,27 @@
+#include <vector>
+class Solution {
+public:
+    vector<int> countOfPairs(int n, int x, int y) {
+      vector<int> result(n, 0);
+
+        auto count_pairs_with_distance = [&](int k) {
+            return min(k, n - k + 1);
+        };
+
+        for (int k = 1; k <= n; ++k) {
+            for (int i = 1; i <= n; ++i) {
+                for (int j = i + 1; j <= n; ++j) {
+                    int distance = std::min({abs(i - j), abs(i - x) + 1 + abs(y - j),
+                                             abs(i - y) + 1 + abs(x - j)});
+                    
+                    if (distance == k) {
+                        result[k - 1] += 2;
+                    }
+                }
+            }
+        }
+
+        return result;
+
+    }
+};
