@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int countKeyChanges(string s) {
+        int changes = 0;
+        char lastChar = '\0';
+        
+        for(char c : s) {
+            c = tolower(c);
+            if(lastChar != '\0' && c != lastChar) {
+                changes++; 
+            }
+            lastChar = c;
+        }
+        
+        return changes;
+    }
+};
