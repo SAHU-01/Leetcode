@@ -1,0 +1,50 @@
+#include <vector>
+#include <map>
+#include <set>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+private:
+    long long maxSequenceLength = 1;
+    map<long long, long long> frequencyMap;
+    set<long long> squaredSet;
+
+    void calculateSequenceLength(long long key, long long count) {
+        if (frequencyMap[key] >= 2) {
+            long long temp = key * key;
+            squaredSet.insert(temp);
+            count += 2;
+            calculateSequenceLength(temp, count);
+            return;
+        } else if (frequencyMap[key] == 1) {
+            count++;
+            maxSequenceLength = max(maxSequenceLength, count);
+        } else {
+            count--;
+            maxSequenceLength = max(maxSequenceLength, count);
+        }
+    }
+
+public:
+    int maximumLength(vector<int>& nums) {
+        for (auto num : nums) {
+            frequencyMap[num]++;
+        }
+
+        for (auto entry : frequencyMap) {
+            if (entry.first == 1) {
+                maxSequenceLength = max(maxSequenceLength, entry.second);
+                if (maxSequenceLength % 2 == 0) {
+                    maxSequenceLength--;
+                }
+                continue;
+            } else if (squaredSet.find(entry.first) != squaredSet.end()) {
+                continue;
+            }
+            calculateSequenceLength(entry.first, 0);
+        }
+        return maxSequenceLength;
+    }
+};
