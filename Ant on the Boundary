@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int returnToBoundaryCount(vector<int>& nums) {
+        int pos = 0;
+    int result = 0;
+    
+    for(int n : nums) {
+        pos += n;
+        if(pos == 0) 
+            result++;
+    }
+    
+    return result;
+
+    }
+};
