@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int maxOperations(vector<int>& nums) {
+       int maxOps = 0;
+    int targetSum = 0;
+    
+    while (nums.size() > 1) {
+        int first = nums[0];
+        int second = nums[1];
+        int sum = first + second;
+        
+        if (maxOps == 0) {
+            targetSum = sum;
+            maxOps++;
+        }
+        else if (sum == targetSum) {
+            maxOps++;
+        }
+        else {
+            break;
+        }
+        
+        nums.erase(nums.begin()); 
+        if (!nums.empty()) {
+            nums.erase(nums.begin()); 
+        }
+    }
+    
+    return maxOps;
+    }
+};
