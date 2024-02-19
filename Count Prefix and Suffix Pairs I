@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int countPrefixSuffixPairs(vector<string>& words) {
+        int count = 0;
+    for (int i = 0; i < words.size(); i++) {
+        for (int j = i + 1; j < words.size(); j++) {
+            string w1 = words[i];
+            string w2 = words[j];
+            if (w1.length() > w2.length())
+                continue;
+            if (w2.substr(0, w1.length()) == w1 && 
+                w2.substr(w2.length() - w1.length()) == w1)
+                count++;
+        }
+    }
+    return count;
+    }
+};
