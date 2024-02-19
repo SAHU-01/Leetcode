@@ -1,0 +1,57 @@
+class Solution {
+  
+    private static final int[][] DIRECTIONS = {{0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}, {-1, 0}, {-1, 1}};
+
+    public int mostFrequentPrime(int[][] mat) {
+        Map<Integer, Integer> primeFrequencies = new HashMap<>();
+        int m = mat.length, n = mat[0].length;
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                for (int[] dir : DIRECTIONS) {
+                    StringBuilder sb = new StringBuilder();
+                    int x = i, y = j;
+                    while (isValidCell(x, y, m, n)) {
+                        sb.append(mat[x][y]);
+                        int num = Integer.parseInt(sb.toString());
+                        if (num > 10 && isPrime(num)) {
+                            primeFrequencies.put(num, primeFrequencies.getOrDefault(num, 0) + 1);
+                        }
+                        x += dir[0];
+                        y += dir[1];
+                    }
+                }
+            }
+        }
+
+        int maxFrequency = 0;
+        int maxPrime = -1;
+
+        for (Map.Entry<Integer, Integer> entry : primeFrequencies.entrySet()) {
+            int prime = entry.getKey();
+            int frequency = entry.getValue();
+            if (frequency > maxFrequency || (frequency == maxFrequency && prime > maxPrime)) {
+                maxFrequency = frequency;
+                maxPrime = prime;
+            }
+        }
+
+        return maxPrime;
+    }
+
+    private boolean isValidCell(int x, int y, int m, int n) {
+        return x >= 0 && x < m && y >= 0 && y < n;
+    }
+
+    private boolean isPrime(int num) {
+        if (num < 2) {
+            return false;
+        }
+        for (int i = 2; i <= Math.sqrt(num); i++) {
+            if (num % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
