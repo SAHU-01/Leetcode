@@ -1,0 +1,39 @@
+class Solution {
+public:
+   
+    long long countSubarrays(vector<int>& nums, int k) {
+        int maxnum = *max_element(begin(nums), end(nums));
+        long long ans = 0;
+        int n = nums.size();
+
+        // Store the indices of the maximum elements
+        vector<int> maxind;
+        for (int i = 0; i < n; i++) {
+            if (nums[i] == maxnum) {
+                maxind.push_back(i);
+            }
+        }
+       
+        // Size of the maxind vector
+        int indsize = maxind.size();
+        // Iterate through maxind to create windows of size k
+        for (int i = 0; i <= indsize - k; i++) {
+            // Define the end index of the current window
+            int end = i + k - 1;
+            long long l, r;
+            // Calculate 'l' (number of elements to the left of the window)
+            if (i == 0) {
+                // If it's the first window, calculate 'l' as the index of the first maximum element
+                l = maxind[i];
+            } else {
+                // If not the first window, calculate 'l' as the difference between the current maximum index and the previous maximum index
+                l = maxind[i] - maxind[i - 1] - 1;
+            }
+            // Calculate 'r' (number of elements to the right of the window)
+            r = n - 1 - maxind[end];
+            // Add the number of subarrays possible for the current window to the answer using the subarr function
+            ans += (l+1)*(r+1);
+        }
+        return ans;
+    }
+};
