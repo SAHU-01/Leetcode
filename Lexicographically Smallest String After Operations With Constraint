@@ -1,0 +1,33 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+class Solution {
+public:
+    int distToA(char c) {
+        return min(c - 'a', 26 - (c - 'a'));
+    }
+    string getSmallestString(string s, int k) {
+        vector<char> t(s.begin(), s.end());
+        
+        for (int i = 0; i < t.size(); i++) {
+            int currentDist = distToA(t[i]);
+            if (k >= currentDist) {
+                k -= currentDist;
+                t[i] = 'a';
+            } else {
+                if (k > 0) {
+                    if (t[i] - k >= 'a') {
+                        t[i] -= k;
+                    } else {
+                        t[i] = 'z' - (k - 1);
+                    }
+                }
+                k = 0;
+                break;
+            }
+        }
+        
+        return string(t.begin(), t.end());
+    }
+};
