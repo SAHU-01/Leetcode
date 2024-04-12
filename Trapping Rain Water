@@ -1,0 +1,29 @@
+#pragma GCC optimize("O3", "unroll-loops")
+class Solution {
+public:
+    using int2=pair<int, int>;
+    static int trap(vector<int>& height) {
+        const unsigned n = height.size();
+        priority_queue<int2, vector<int2>, greater<int2>> pq;
+        pq.emplace(height[0], 0);//initial with boundary cells 0, n-1
+        pq.emplace(height[n-1], n-1); 
+        height[0]=-1, height[n-1]=-1;// visited
+        int ans=0, water_level=0;
+        while(!pq.empty()){
+            auto [h, i]=pq.top();
+            water_level=max(water_level, h);
+            pq.pop();
+            for(int j: {i-1, i+1}){// adjacent cells
+                if (j<=0||j>=n-1||height[j]==-1)// boundary or outside or visited
+                    continue;
+                int& h0=height[j];
+                if(h0<water_level) ans+=water_level-h0;
+                pq.emplace(h0, j);
+                h0=-1;//visited
+            }
+        }
+        return ans;
+    }
+};
+
+       
