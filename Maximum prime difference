@@ -1,0 +1,38 @@
+class Solution {
+public:
+   bool isPrime(int n) {
+    if (n < 2) return false;
+    for (int i = 2; i * i <= n; i++) {
+        if (n % i == 0) return false;
+    }
+    return true;
+}
+
+int maximumPrimeDifference(vector<int>& nums) {
+    int n = nums.size();
+    int maxDiff = 0;
+    vector<int> primeIndices;
+
+    // Find the indices of prime numbers
+    for (int i = 0; i < n; i++) {
+        if (isPrime(nums[i])) {
+            primeIndices.push_back(i);
+        }
+    }
+
+    // Edge case: if there is only one prime number
+    if (primeIndices.size() == 1) {
+        return 0;
+    }
+
+    // Calculate the maximum distance between indices
+    maxDiff = max(maxDiff, primeIndices.back() - primeIndices.front());
+
+    // Find the maximum distance between consecutive prime indices
+    for (int i = 0; i < primeIndices.size() - 1; i++) {
+        maxDiff = max(maxDiff, primeIndices[i + 1] - primeIndices[i]);
+    }
+
+    return maxDiff;
+}
+};
