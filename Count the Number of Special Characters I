@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int numberOfSpecialChars(string word) {
+        unordered_set<char> lowercase, uppercase;
+        
+        // Populate the lowercase and uppercase sets
+        for (char c : word) {
+            if (islower(c)) {
+                lowercase.insert(c);
+            } else {
+                uppercase.insert(c);
+            }
+        }
+        
+        int count = 0;
+        
+        // Count the characters that exist in both sets
+        for (char c : lowercase) {
+            char upperC = toupper(c);
+            if (uppercase.count(upperC)) {
+                count++;
+            }
+        }
+        
+        return count;
+    }
+};
+
