@@ -1,0 +1,29 @@
+class Solution {
+    public int numberOfSpecialChars(String word) {
+         Map<Character, Integer> x = new HashMap<>();
+        Map<Character, Integer> y = new HashMap<>();
+        
+        for (int i = 0; i < word.length(); i++) {
+            char c = Character.toLowerCase(word.charAt(i));
+            if (Character.isLowerCase(word.charAt(i))) {
+                x.put(c, i);
+            } else {
+                if (!y.containsKey(c)) {
+                    y.put(c, i);
+                }
+            }
+        }
+        
+        int count = 0;
+        for (Map.Entry<Character, Integer> entry : x.entrySet()) {
+            char key = entry.getKey();
+            int value = entry.getValue();
+            if (y.containsKey(key) && value < y.get(key)) {
+                count++;
+            }
+        }
+        
+        return count;
+
+    }
+}
