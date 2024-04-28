@@ -1,0 +1,48 @@
+class Solution {
+public:
+    int minimumAddedInteger(vector<int>& nums1, vector<int>& nums2) {
+        sort(nums1.begin(), nums1.end());
+        sort(nums2.begin(), nums2.end());
+
+        unordered_map<int, int> countX;
+        int minPossibleX = INT_MAX;
+
+        for (int i = 0; i < nums1.size(); i++) {
+            for (int j = 0; j < nums2.size(); j++) {
+                int x = nums2[j] - nums1[i];
+                countX[x]++;
+            }
+        }
+
+        for (auto [x, count] : countX) {
+            vector<int> transformed(nums1.size());
+            for (int i = 0; i < nums1.size(); i++) {
+                transformed[i] = nums1[i] + x;
+            }
+            sort(transformed.begin(), transformed.end());
+            if (canMatchMinusTwo(transformed, nums2)) {
+                minPossibleX = min(minPossibleX, x);
+            }
+        }
+
+        return minPossibleX;
+    }
+
+private:
+    bool canMatchMinusTwo(vector<int>& transformed, vector<int>& nums2) {
+        int i = 0, j = 0, skip = 2;
+        while (i < transformed.size() && j < nums2.size()) {
+            if (transformed[i] == nums2[j]) {
+                i++;
+                j++;
+            } else {
+                i++;
+                skip--;
+                if (skip < 0) {
+                    return false;
+                }
+            }
+        }
+        return j == nums2.size() && (i - j) <= 2;
+    }
+};
