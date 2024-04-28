@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int addedInteger(vector<int>& nums1, vector<int>& nums2) {
+        // Sort both arrays in ascending order
+        sort(nums1.begin(), nums1.end());
+        sort(nums2.begin(), nums2.end());
+        
+        int n = nums1.size();
+        int x = nums2[0] - nums1[0]; // Assume the first difference is x
+        
+        // Check if all differences are equal to x
+        for (int i = 1; i < n; i++) {
+            if (nums2[i] - nums1[i] != x) {
+                // If any difference is not equal to x, return -1
+                return -1;
+            }
+        }
+        
+        return x;
+    }
+};
