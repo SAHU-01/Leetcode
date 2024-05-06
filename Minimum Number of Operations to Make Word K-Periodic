@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int minimumOperationsToMakeKPeriodic(string word, int k) {
+        int n = word.length();
+        unordered_map<string, int> count;
+        
+        // Count the occurrences of each substring of length k
+        for (int i = 0; i < n; i += k) {
+            string substr = word.substr(i, k);
+            count[substr]++;
+        }
+        
+        int maxCount = 0;
+        
+        // Find the substring with the maximum count
+        for (auto [substr, cnt] : count) {
+            maxCount = max(maxCount, cnt);
+        }
+        
+        // The minimum number of operations is the total count minus the maximum count
+        return n / k - maxCount;
+    }
+};
