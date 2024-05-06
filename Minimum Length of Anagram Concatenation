@@ -1,0 +1,40 @@
+#include <iostream>
+#include <string>
+#include <unordered_map>
+#include <algorithm>
+
+using namespace std;
+
+// Helper function to calculate the greatest common divisor
+int gcd(int a, int b) {
+    while (b != 0) {
+        int temp = b;
+        b = a % b;
+        a = temp;
+    }
+    return a;
+}
+
+class Solution {
+public:
+    int minAnagramLength(string s) {
+        // Create a frequency count of characters in s
+        unordered_map<char, int> char_count;
+        for (char c : s) {
+            char_count[c]++;
+        }
+
+        // Calculate the greatest common divisor of counts
+        int common_divisor = char_count[s[0]];
+        for (auto count : char_count) {
+            common_divisor = gcd(common_divisor, count.second);
+        }
+
+        // Return the sum of counts divided by the GCD
+        int sum = 0;
+        for (auto count : char_count) {
+            sum += count.second;
+        }
+        return sum / common_divisor;
+    }
+};
