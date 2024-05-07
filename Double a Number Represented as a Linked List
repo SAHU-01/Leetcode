@@ -1,0 +1,37 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+#pragma GCC optimize("O3", "unroll-loops")
+class Solution {
+public:
+    static  ListNode* doubleIt(ListNode* head) {
+        ListNode* prev= NULL;
+        if (head->val>=5)
+            head= new ListNode(0,head);
+        prev=head;
+        for (ListNode* curr=head; curr; prev=curr, curr=curr->next){
+            if (curr->val>=5){
+                prev->val++; 
+                curr->val=curr->val*2-10;
+            }
+            else 
+               curr->val*=2;
+                
+        }
+        return head;
+    }
+};
+
+auto init = []() {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    return 'c';
+}();
