@@ -1,0 +1,71 @@
+void print(auto& c) {
+    for (auto& row : c) {
+        for (int x : row)
+            cout << setw(5) << x;
+        cout << endl;
+    }
+    cout << "-------\n";
+}
+
+class Solution {
+public:
+    using int2 = pair<int, int>;       //(i, j)
+    using int3 = tuple<int, int, int>; //(distance to thieves, i, j)
+    const int d[5] = {0, 1, 0, -1, 0};
+    int maximumSafenessFactor(vector<vector<int>>& grid) {
+        int n = grid.size();
+        queue<int2> q;
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                if (grid[i][j] == 1) {
+                    grid[i][j] = 0;
+                    q.emplace(i, j);
+                } 
+                else grid[i][j] = -1;
+    //    print(grid);
+        int dist = 1;
+        while (!q.empty()) {
+            int qz = q.size();
+            for (int a = 0; a < qz; a++) {
+                auto [i, j] = q.front();
+                q.pop();
+                for (int b = 0; b < 4; b++) {
+                    int r = i + d[b], c = j + d[b + 1];
+                    if (r < 0 || r >= n || c < 0 || c >= n || grid[r][c] != -1)
+                        continue;
+                    grid[r][c] = dist; // grid[r][c]=dist=distance to thieves
+                    q.emplace(r, c);
+                }
+            }
+            dist++;
+        }
+    //    print(grid);
+        int L1 = grid[0][0];
+        grid[0][0]=-2;//visited
+        priority_queue<int3> pq; // max heap
+        pq.emplace(L1, 0, 0);
+        while (!pq.empty()) {
+            auto [dist, i, j] = pq.top();
+            pq.pop();
+        //    cout<<dist<<","<<i<<","<<j<<endl;
+            L1 = min(L1, dist);
+            if (i == n - 1 && j == n - 1)
+                return L1;
+            for (int a = 0; a < 4; a++) {
+                int r = i + d[a], c = j + d[a + 1];
+                if (r < 0 || r >= n || c < 0 || c >= n || grid[r][c] == -2)
+                    continue;
+                pq.emplace(grid[r][c], r, c);
+                grid[r][c]=-2;
+            }
+        }
+        return L1;
+    }
+};
+
+auto init = []() {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    return 'c';
+}();
