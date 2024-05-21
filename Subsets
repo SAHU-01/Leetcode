@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int n;
+    vector<vector<int>> powerSet;
+    void dfs(int idx, vector<int>& subset, vector<int>& nums ){
+       
+        powerSet.push_back(subset);
+        
+        for(int i=idx; i<n; i++){
+            subset.push_back(nums[i]);
+            dfs(i+1, subset, nums);
+            subset.pop_back();
+        }
+    }
+
+    vector<vector<int>> subsets(vector<int>& nums) {
+        n=nums.size();
+        vector<int> subset={};
+        dfs(0,  subset, nums);
+        
+        return powerSet;
+    }
+};
+
+auto init = []() {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    return 'c';
+}();
