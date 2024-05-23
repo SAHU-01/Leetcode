@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int beautifulSubsets(vector<int>& nums, int k) {
+        int n=nums.size();
+        
+        sort(nums.begin(),nums.end());
+
+        vector<int> parent(n,1);
+        for(int i=0;i<n;i++)
+            parent[i]=i;
+        
+        unordered_map<int,int> prev;
+        for(int i=0;i<n;i++)
+        {
+            if(prev.find(nums[i]-k)!=prev.end())
+                parent[i]=parent[ prev[nums[i]-k] ];
+            prev[nums[i]]=i;
+        }
+        
+        map<int,int> mp;
+        for(int i=0;i<n;i++)
+            mp[parent[i]]++;
+        
+        vector<int> fibo(25);
+        fibo[1]=2;
+        fibo[2]=3;
+        for(int i=3;i<=24;i++)
+            fibo[i]=fibo[i-1]+fibo[i-2];
+        
+        int ans=1;
+        for(auto &[rep,len] : mp)
+            ans=ans*(fibo[len]);
+        return ans-1;
+    }
+};
