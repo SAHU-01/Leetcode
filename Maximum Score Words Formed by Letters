@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int maxScoreWords(vector<string>& words, vector<char>& letters, vector<int>& score) {
+        vector<int> cnt(26, 0);
+        for (char letter : letters)
+            cnt[letter - 'a']++;
+
+        map<vector<int>, int> d;
+        d[cnt] = 0;
+        int res = 0;
+
+        for (const string& word : words) {
+            map<vector<int>, int> new_d;
+
+            for (const auto& [rem, cur] : d) {
+                vector<int> new_rem = rem;
+                int new_cur = cur;
+                bool valid = true;
+
+                for (char c : word) {
+                    new_rem[c - 'a']--;
+                    new_cur += score[c - 'a'];
+                    if (new_rem[c - 'a'] < 0) {
+                        valid = false;
+                        break;
+                    }
+                }
+
+                if (!valid) continue;
+
+                res = max(res, new_cur);
+                new_d[new_rem] = max(new_d[new_rem], new_cur);
+            }
+            
+            for (const auto& [k, val] : new_d) {
+                d[k] = max(d[k], val);
+            }
+        }
+
+        return res;
+    }
+};
