@@ -1,0 +1,24 @@
+class Solution {
+public:
+    using int2=pair<int, int>;
+    static bool isNStraightHand(vector<int>& hand, int groupSize) {
+        const int n=hand.size();
+        if (n%groupSize!=0) return 0;
+        unordered_map<int, int> mp;
+        for(int x: hand) mp[x]++;
+        priority_queue<int2> pq(mp.begin(), mp.end());// Max heap
+        while(!pq.empty()){
+            auto [x, f]=pq.top(); pq.pop();
+            vector<int2> group;
+            group.reserve(groupSize-1);
+            for(int k=1; k<groupSize; k++){
+                auto [y, f2]=pq.top(); pq.pop();
+                f2-=f;
+                if(y!=x-k || f2<0) return 0;
+                if( f2>0) group.emplace_back(y, f2);
+            }
+            for(auto& pair: group) pq.push(pair);
+        }
+        return 1;
+    }
+};
