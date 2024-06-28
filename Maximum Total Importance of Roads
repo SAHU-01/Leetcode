@@ -1,0 +1,25 @@
+class Solution {
+public:
+    static long long maximumImportance(int n, vector<vector<int>>& roads) {
+        vector<int> deg(n, 0);// deg(v)=# of of paths containng v 
+        for(auto& e: roads){
+            deg[e[0]]++;
+            deg[e[1]]++;
+        }
+        sort(deg.begin(), deg.end());
+        long long ans=0;
+        for(int i=0; i<n; i++)
+            ans+=(i+1LL)*deg[i];
+        return ans;
+    }
+};
+
+
+
+
+auto init = []() {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    return 'c';
+}();
